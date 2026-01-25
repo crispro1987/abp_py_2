@@ -1,12 +1,12 @@
 def pedir_nombre():
-    name = print("Ingrese su nombre: ")
+    name = input("Ingrese su nombre: ")
     return name
 
 def pedir_edad():
     #Creamos un while para manejar errores de ingreso edad
     while True:
         try:
-            age = int(print("Ingrese su edad: "))
+            age = int(input("Ingrese su edad: "))
             if age > 0:
                 return age
             else:
@@ -41,11 +41,11 @@ Seleccione la opción:
             print("La opción es 1,2 o 3")
             continue
 
-def registrar_usuario(name,age,user_type):
+def registrar_usuario(user):
     user = {
-        "name": name,
-        "age": age,
-        "user_type": user_type
+        "name": user[0],
+        "age": user[1],
+        "user_type": user[2]
     }
 
     return user
