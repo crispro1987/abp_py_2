@@ -129,6 +129,9 @@ Seleccione una opción:
         print("Opción no valida")
         return
     
+    counter = 1
+    total_user = len(users)
+
     for user in users:
         if user.get(opt_search) == search1:
             print("=======[ USUARIO ENCONTRADO ]=======")
@@ -142,9 +145,32 @@ Seleccione una opción:
             input("Presiona una tecla para volver al menú...")
             return
         else:
-            print("========= [XXX] =========")
-            print("Usuario no encontrado")
-    
+            if(counter >= total_user):
+                print("========= [XXX] =========")
+                print("Usuario no encontrado")
+                input("Presiona una tecla para volver al menú...")
+
+        counter += 1
 
 def delete_user():
-    pass
+    print(users)
+
+    mail = input("Ingrese mail de usuario a eliminar: ")
+
+    counter = 1
+    total_user = len(users)
+
+    for user in users:
+        if user["mail"] == mail:
+            name_user = user["name"]
+            users.remove(user)
+            print("=======[ USUARIO ELIMINADO ]=======")
+            print("USUARIO: ",name_user)
+            input("Presiona una tecla para volver a intentar...")
+            return
+        else:
+            if(counter >= total_user):
+                print("=======[ USUARIO NO EXISTE ]=======")
+                input("Presiona una tecla para volver al menú...")
+
+        counter += 1
