@@ -22,7 +22,6 @@ Categoría: {category}
 Nivel acceso: {access}
 """)
 
-users = {}
 
 while True:
     try:
@@ -30,9 +29,7 @@ while True:
         option = int(input("Ingrese una opcion: "))
 
         if(option == 1):
-            new_user = add_user(users)
-            users = new_user
-            print(users)
+            add_user()
             print("""
 ***
                   
@@ -42,7 +39,7 @@ Usuario registrado
 """)
             continue
         elif(option == 2):
-            list_user(users)
+            list_user()
             continue
         elif(option == 3):
             search_user()
