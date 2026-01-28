@@ -1,3 +1,5 @@
+from modulos.funciones_utiles import (contar_usuarios,error_msg,mostrar_usuario)
+
 users = []
 
 mails = set()
@@ -13,7 +15,7 @@ def add_user():
     while True:
         rut = input("Ingrese rut: ")
         if rut in ruts:
-            print("========= [XXX] =========")
+            error_msg()
             print(f"El rut {rut} ya está registrado")
             input("Presiona una tecla para volver a intentar...")
             continue
@@ -21,11 +23,12 @@ def add_user():
             break
 
     name = input("Ingrese nombre: ")
-    
+    age = input("Ingrese edad: ")
+
     while True:
         mail = input("Ingrese email: ")
         if mail in mails:
-            print("========= [XXX] =========")
+            error_msg()
             print(f"El mail {mail} ya está registrado")
             input("Presiona una tecla para volver a intentar...")
             continue
@@ -54,19 +57,20 @@ def add_user():
                 role = ROLES[2]
                 break
             else:
-                print("========= [XXX] =========")
+                error_msg()
                 print("Ingrese una opción valida")
-                print("========= [XXX] =========")
+                error_msg()
                 continue
         except:
-            print("========= [XXX] =========")
+            error_msg()
             print('Ingrese una opción valida')
-            print("========= [XXX] =========")
+            error_msg()
             continue
 
     user = {
         "rut": rut,
         "name": name,
+        "age": age,
         "mail": mail,
         "phone": phone,
         "rol": role
@@ -78,12 +82,14 @@ def add_user():
     return
 
 def list_user():
-    print("""
+    qty = contar_usuarios(users)
+    
+    print(f"""
 
 ===============================
 ===    LISTA DE USUARIOS    ===
 ===============================
-          
+=== Hay {qty} usuarios          ===
 """)
     if not users:
         print("No hay usuarios registrados.")
@@ -97,13 +103,9 @@ def list_user():
     for user in users:
         if(counter == 1):
             print("===============================================")
-        print(f"""
-== Rut: {user["rut"]}
-== Nombre: {user.get('name','NN')}
-== Mail: {user['mail']}
-== Teléfono: {user.get('phone','Sin teléfono')}
-== ROL: {user['rol']}
-""")
+        
+        mostrar_usuario(user)
+
         if(counter == total_user):
             print("===============================================")
         counter += 1
@@ -125,7 +127,7 @@ Seleccione una opción:
         search1 = input("Ingrese mail a buscar: ")
         opt_search = "mail"
     else:
-        print("========= [XXX] =========")
+        error_msg()
         print("Opción no valida")
         return
     
@@ -135,26 +137,18 @@ Seleccione una opción:
     for user in users:
         if user.get(opt_search) == search1:
             print("=======[ USUARIO ENCONTRADO ]=======")
-            print(f"""
-[RUT] : {user.get('rut')}
-[NOMBRE] : {user.get('name','NN')}
-[MAIL] : {user.get('mail')}
-[TELÉFONO] : {user.get('phone','Sin teléfono')}
-[ROL] : {user.get('rol')}
-""")
+            mostrar_usuario(user)
             input("Presiona una tecla para volver al menú...")
             return
         else:
             if(counter >= total_user):
-                print("========= [XXX] =========")
+                error_msg()
                 print("Usuario no encontrado")
                 input("Presiona una tecla para volver al menú...")
 
         counter += 1
 
 def delete_user():
-    print(users)
-
     mail = input("Ingrese mail de usuario a eliminar: ")
 
     counter = 1
@@ -174,3 +168,26 @@ def delete_user():
                 input("Presiona una tecla para volver al menú...")
 
         counter += 1
+
+def category_user():
+
+    category = {}
+ 
+    for user in users:
+        age = int(user['age'])
+
+        if age < 18:
+            category['menor'] = category.get('menor', 0) + 1
+        elif age <= 60:
+            category['adulto'] = category.get('adulto', 0) + 1
+        else:
+            category['adulto_mayor'] = category.get('adulto_mayor', 0) + 1
+
+    
+    for key, value in category.items():
+        if value > 1:
+            ese = 's'
+        else:
+            ese = ''
+        print(f"{key}: {value} usuario{ese}")
+        print("------------------------------")

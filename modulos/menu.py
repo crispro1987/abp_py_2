@@ -8,6 +8,7 @@ def menu():
 [2] Listar usuarios
 [3] Buscar usuarios
 [4] Eliminar usuario
-[5] Salir
+[5] Categorías de usuarios
+[6] Salir
           """)
             
