@@ -1,27 +1,8 @@
-from modulos.datos_basicos import (pedir_nombre,pedir_edad,pedir_tipo_usuario,registrar_usuario)
-from modulos.validaciones import (categoria_edad,login)
 from modulos.menu import (menu)
 from modulos.gestion_datos import (add_user,list_user,search_user,delete_user,category_user)
 
-name = pedir_nombre()
-age = pedir_edad()
-user_type = pedir_tipo_usuario()
-
-user = name,age,user_type
-
-registrar_usuario(user)
-
-category = categoria_edad(age)
-access = login(user_type)
-
-print(f"""
-Bienvenido {name} 
---------------------------
-Categoría: {category}
-Nivel acceso: {access}
-""")
-
-
+# Creación del menú con un While para iterar mientras quiera el usuario continuar
+# y usamos if como condicional para las opciones llamando a sus respectivas funciones
 while True:
     try:
         menu()
@@ -45,7 +26,7 @@ Usuario registrado
         elif(option == 5):
             category_user()
         elif(option == 6):
-            print(f"Hasta pronto {name}")
+            print(f"Hasta pronto")
             break
         else:
             print("Opción invalida")
