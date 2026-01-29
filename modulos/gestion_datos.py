@@ -1,17 +1,20 @@
 from modulos.funciones_utiles import (contar_usuarios,error_msg,mostrar_usuario)
 
-users = []
+users = [] # Lista para los usuarios
 
-mails = set()
+mails = set() # Creación de set para evitar duplicidad de mail
 
-ruts = set()
+ruts = set() # Set para evitar duplicidad de rut
 
-ROLES = ('Admin', 'Invitado', 'Usuario')
+ROLES = ('Admin', 'Invitado', 'Usuario') # Tupla con roles de usuario
 
+# Función agregar usuario
 def add_user():
     print("""
 ====== REGISTRAR USUARIO ======
 """)
+    
+    # Iterar para verificar que rut exista o venga en blanco
     while True:
         rut = input("Ingrese rut: ")
         if rut in ruts:
@@ -19,12 +22,16 @@ def add_user():
             print(f"El rut {rut} ya está registrado")
             input("Presiona una tecla para volver a intentar...")
             continue
+        elif rut == '':
+            error_msg()
+            print("Campo Obligatorio")
         else:
             break
 
     name = input("Ingrese nombre: ")
-    age = input("Ingrese edad: ")
+    age = int(input("Ingrese edad: "))
 
+    # Iterar nuevamente pero ahora para verificar mail
     while True:
         mail = input("Ingrese email: ")
         if mail in mails:
@@ -32,6 +39,9 @@ def add_user():
             print(f"El mail {mail} ya está registrado")
             input("Presiona una tecla para volver a intentar...")
             continue
+        elif mail == '':
+            error_msg()
+            print("Campo Obligatorio")
         else:
             break
 
@@ -40,6 +50,8 @@ def add_user():
     
 
     print("========= ROL =========")
+
+    # Iterar con while para la opción de roles
     while True:
         for i, rol in enumerate(ROLES):
             print(f"[{i+1}] - {rol}")
@@ -66,14 +78,27 @@ def add_user():
             print('Ingrese una opción valida')
             error_msg()
             continue
+    
+    # Verificar si es adulto o menor de edad para pasar
+    # dato al diccionario anidado
+    if age >= 18:
+        catgry = True
+    else:
+        catgry = False
 
+    # Creación del usuario para la lista user []
+    # con el diccionario anidado
     user = {
         "rut": rut,
         "name": name,
         "age": age,
         "mail": mail,
         "phone": phone,
-        "rol": role
+        "rol": role,
+        "data": {
+            "is_adult": catgry,
+            "verified": False
+        }
     }
 
     users.append(user)
@@ -81,6 +106,7 @@ def add_user():
     ruts.add(rut)
     return
 
+# Función para listar usuarios
 def list_user():
     qty = contar_usuarios(users)
     
@@ -91,13 +117,15 @@ def list_user():
 ===============================
 === Hay {qty} usuarios          ===
 """)
+    
+    # Comprobar no existen usuarios
     if not users:
         print("No hay usuarios registrados.")
         print("")
         input("Presiona una tecla para volver al menú...")
         return
     
-    total_user = len(users)
+    total_user = len(users) # Contar la cantidad de registro en usuarios
     counter = 1
 
     for user in users:
@@ -112,6 +140,7 @@ def list_user():
 
     input("Presiona una tecla para volver al menú...")
 
+# Función para buscar usuario. Por Rut o Mail
 def search_user():
     option = int(input("""
 =======================
@@ -148,6 +177,7 @@ Seleccione una opción:
 
         counter += 1
 
+# Función para eliminar usuario por mail
 def delete_user():
     mail = input("Ingrese mail de usuario a eliminar: ")
 
@@ -169,9 +199,14 @@ def delete_user():
 
         counter += 1
 
+# Función para ver la cantidad de usuarios por categoría
 def category_user():
 
     category = {}
+
+    category['menor'] = 0
+    category['adulto'] = 0
+    category['adulto_mayor'] = 0
  
     for user in users:
         age = int(user['age'])
@@ -189,5 +224,8 @@ def category_user():
             ese = 's'
         else:
             ese = ''
+        print("------------------------------")
         print(f"{key}: {value} usuario{ese}")
         print("------------------------------")
+    
+    input("Presiona una tecla para volver a intentar...")
