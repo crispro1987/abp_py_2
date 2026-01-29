@@ -1,3 +1,4 @@
+# Procedimiento para menu del sistema
 def menu():
     print("""
 ======================
